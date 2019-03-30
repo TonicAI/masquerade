@@ -1,0 +1,120 @@
+
+{
+    "_comment": "Default Configuration supports automatic masking of most data types.  Currently the data types that are not automatically masked are: box, bytea, cidr, circle, interval, line, lseg, path, point, polygon, tsquery, tsvector,",
+    "proxy_port":20000,
+    "db_connection_details": {
+        "port": 15432,
+        "ip": "127.0.0.1",
+        "user":"user",
+        "password":"password",
+        "database":"test_data"
+    },
+    "masking_options": {
+        "preserve_keys": false,
+        "column_masks": [            {
+            "column":"category",
+            "table":"events",
+            "schema":"public",
+            "masking_function":"maskx"
+        }
+        ],
+        "data_type_masks": [
+            {
+                "data_type": "bigint",
+                "masking_function":"maskbigint"
+            },
+            {
+                "data_type": "bit",
+                "masking_function":"maskbit"
+            },
+            {
+                "data_type": "bit_varying",
+                "masking_function":"maskbit"
+            },
+            {
+                "data_type": "boolean",
+                "masking_function":"maskboolean"
+            },
+            {
+                "data_type": "character",
+                "masking_function":"maskcharacters"
+            },
+            {
+                "data_type": "character_varying",
+                "masking_function":"maskcharacters"
+            },
+            {
+                "data_type": "date",
+                "masking_function":"maskdate"
+            },
+            {
+                "data_type": "double_precision",
+                "masking_function":"maskdouble"
+            },
+            {
+                "data_type": "inet",
+                "masking_function":"maskcharacters"
+            },
+            {
+                "data_type": "integer",
+                "masking_function":"maskinteger"
+            },
+            {
+                "data_type": "json",
+                "masking_function":"maskcharacters"
+            },
+            {
+                "data_type": "jsonb",
+                "masking_function":"maskcharacters"
+            },
+            {
+                "data_type": "macaddr",
+                "masking_function":"maskcharacters"
+            },
+            {
+                "data_type": "money",
+                "masking_function":"maskdouble"
+            },
+            {
+                "data_type": "numeric",
+                "masking_function":"maskdouble"
+            },
+            {
+                "data_type": "real",
+                "masking_function":"maskdouble"
+            },
+            {
+                "data_type": "smallint",
+                "masking_function":"masktinyint"
+            },
+            {
+                "data_type": "text",
+                "masking_function":"maskcharacters"
+            },
+            {
+                "data_type": "time",
+                "masking_function":"masktime"
+            },
+            {
+                "data_type": "timetz",
+                "masking_function":"masktime"
+            },
+            {
+                "data_type": "timestamp",
+                "masking_function":"masktimestamp"
+            },
+            {
+                "data_type": "timestamptz",
+                "masking_function":"masktimestamp"
+            },
+            {
+                "data_type": "uuid",
+                "masking_function":"maskuuid"
+            },
+            {
+                "data_type": "xml",
+                "masking_function":"maskcharacters"
+            }
+        ]
+    }
+}
