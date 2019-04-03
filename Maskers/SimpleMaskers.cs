@@ -13,17 +13,23 @@ namespace PgMaskingProxy.Maskers
 
         static public string MaskBigInt(string val)
         {
-            return (Int64.Parse(val)*_rng.NextDouble()).ToString();
+            long v = Int64.Parse(val);
+            long n = _rng.NextLong(0,v+1);
+            return v<0 ? (-1*n).ToString() : n.ToString();
         }
 
         static public string MaskInteger(string val)
         {
-            return (Int32.Parse(val)*_rng.NextDouble()).ToString();
+            int v = Int32.Parse(val);
+            int n = _rng.Next(v+1);
+            return v<0 ? (-1*n).ToString() : n.ToString();
         }
 
         static public string MaskTinyInt(string val)
         {
-            return (Int16.Parse(val)*_rng.NextDouble()).ToString();
+            short v = Int16.Parse(val);
+            int n = _rng.Next(v+1);
+            return v<0 ? (-1*n).ToString() : n.ToString();
         }
 
         static public string MaskBit(string val)
