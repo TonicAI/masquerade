@@ -1,10 +1,10 @@
 
-# Postgres Masking Proxy
-Postgres Masking Proxy is two things.  It is a TCP proxy that sits between your Postgres Database and client and proxies data back and forth.  The proxy listens to all messages sent from the database to the client and provides a hook for users to modify data in-transit and before being received by the client.  Second, it is a masker.  It has built-in functionality that can mask sensitive data in the database so that it cannot be seen by the client.
+# Masquerade: A Postgres proxy that masks sensitive datasets
+Masquerade is two things.  It is a TCP proxy that sits between your Postgres Database and client and proxies data back and forth.  The proxy listens to all messages sent from the database to the client and provides a hook for users to modify data in-transit and before being received by the client.  Second, it is a masker.  It has built-in functionality that can mask sensitive data in the database so that it cannot be seen by the client.
 
-This masking proxy works out of the box and you can start masking your data immediately.  Simply run the proxy (see below) and begin issues SQL queries as you would normally do and you'll see the masked reults.
+Masquerade works out of the box and you can start masking your data immediately.  Simply run the proxy (see below) and begin issues SQL queries as you would normally do and you'll see the masked reults.
 
-The Postgres Masking Proxy is developed by [Tonic.ai](https://tonic.ai)
+Masquerade is developed by [Tonic.ai](https://tonic.ai)
 
 # Requirements
 * Docker and docker-compose
