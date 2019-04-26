@@ -1,5 +1,7 @@
 ![Side by side of psql running against the proxy and against the database](https://tonic.ai/uploads/masquerade-a-postgres-proxy.gif)
 
+** Check out our [blog post](https://www.tonic.ai/post/masquerade-a-postgres-proxy/) on Masquerade!! **
+
 # Masquerade: A Postgres proxy that masks sensitive datasets
 Masquerade is two things.  It is a TCP proxy that sits between your Postgres Database and client and proxies data back and forth.  The proxy listens to all messages sent from the database to the client and provides a hook for users to modify data in-transit and before being received by the client.  Second, it is a masker.  It has built-in functionality that can mask sensitive data in the database so that it cannot be seen by the client.
 
