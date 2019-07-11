@@ -80,6 +80,12 @@ namespace PgMaskingProxy
             var j = JObject.Parse(File.ReadAllText("config.json"));
 
             int proxyPort = (int)j["proxy_port"];
+            string proxySourceIp = (string)j["proxy_source_ip"];
+
+            if(String.IsNullOrEmpty(proxySourceIp))
+            {
+              proxySourceIp = "127.0.0.1";
+            }
 
             var dbDetails = (JObject)j["db_connection_details"];
             string dbIp = (string)dbDetails["ip"];
@@ -91,7 +97,7 @@ namespace PgMaskingProxy
             Console.WriteLine($"\tProxy Port: {proxyPort}");
             Console.WriteLine($"\tDatabase Details: {user}@{dbIp}:{dbPort}/{db}");
             _tcpProxy = new TcpProxy(_pgStateMachine.ProcessBuffer, _pgStateMachine.SetStateToInitial);
-            _tcpProxy.Start(new IPEndPoint(IPAddress.Parse("127.0.0.1"), proxyPort), new IPEndPoint(IPAddress.Parse(dbIp), dbPort));
+            _tcpProxy.Start(new IPEndPoint(IPAddress.Parse(proxySourceIp), proxyPort), new IPEndPoint(IPAddress.Parse(dbIp), dbPort));
         }
 
         private Func<string,string> getMaskingFunction(uint tableOid, uint dataTypeOid, string columnName)
