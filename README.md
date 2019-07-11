@@ -65,6 +65,7 @@ The configuration can be found in the config.json file in the root directory of 
 | Config Variable | Description |
 | ----------------|-----------------|
 |proxy_port|Local port on which Proxy will listen for client connections|
+|proxy_source_ip|Local IP address on which Proxy will listen for client connections|
 |db_connection_details| Connection details of the Postgres Database.  See the config.json for a list of required fields.|
 |masking_options| Details for how you want to mask your data.  Includes information on how to handle primary and foreign keys, how to mask based on column names or data types.  See below for a more detailed description|
 
