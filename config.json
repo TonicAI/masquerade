@@ -2,6 +2,7 @@
 {
     "_comment": "Default Configuration supports automatic masking of most data types.  Currently the data types that are not automatically masked are: box, bytea, cidr, circle, interval, line, lseg, path, point, polygon, tsquery, tsvector,",
     "proxy_port":20000,
+    "proxy_source_ip": "127.0.0.1",
     "db_connection_details": {
         "port": 15432,
         "ip": "127.0.0.1",
