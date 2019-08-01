@@ -1,5 +1,17 @@
 version: '3'
 services:
+  masquerade:
+    image: mcr.microsoft.com/dotnet/core/sdk:2.1
+    container_name: masquerade
+    volumes:
+      - ./:/app
+    working_dir: /app
+    entrypoint: dotnet run
+    ports:
+      - 20000:20000
+    depends_on:
+      - PgMaskingProxyDB
+
   PgMaskingProxyDB:
     image: postgres:9.6.10
     restart: always
@@ -12,3 +24,4 @@ services:
     container_name: PgMaskingProxyDB
     volumes:
       - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql
+
