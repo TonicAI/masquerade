@@ -48,7 +48,7 @@ If you would like to connect to your own database instead of the toy database th
 ```json
 "db_connection_details": {
         "port": 15432,
-        "host": "127.0.0.1",
+        "ip": "127.0.0.1",
         "user":"user",
         "password":"password",
         "database":"test_data"

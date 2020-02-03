@@ -4,8 +4,6 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Dns = System.Net.Dns;
-using AddressFamily = System.Net.Sockets.AddressFamily;
 using Newtonsoft.Json.Linq;
 using Npgsql;
 using PgMaskingProxy.Helpers;
@@ -71,40 +69,6 @@ namespace PgMaskingProxy
             }
         }
 
-        private static IPEndPoint GetIPEndPointFromHostName(string hostName, int port, bool throwIfMoreThanOneIP)
-        {
-            var addresses = System.Net.Dns.GetHostAddresses(hostName);
-            // Console.WriteLine(addresses[0]);
-            if (addresses.Length == 0)
-            {
-                throw new ArgumentException(
-                    "Unable to retrieve address from specified host name.",
-                    "hostName"
-                );
-            }
-            else if (throwIfMoreThanOneIP && addresses.Length > 1)
-            {
-                throw new ArgumentException(
-                    "There is more that one IP address to the specified host.",
-                    "hostName"
-                );
-            }
-            return new IPEndPoint(addresses[0], port); // Port gets validated here.
-        }
-
-        private static string GetLocalIPAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
-        }
-
         public void Start()
         {
             if(!File.Exists("config.json"))
@@ -120,29 +84,20 @@ namespace PgMaskingProxy
 
             if(String.IsNullOrEmpty(proxySourceIp))
             {
-              proxySourceIp = GetLocalIPAddress();
+              proxySourceIp = "127.0.0.1";
             }
 
             var dbDetails = (JObject)j["db_connection_details"];
-            string dbHost = (string)dbDetails["host"];
+            string dbIp = (string)dbDetails["ip"];
             int dbPort = (int)dbDetails["port"];
             string db = (string)dbDetails["database"];
             string user = (string)dbDetails["user"];
 
             Console.WriteLine("Proxy Running:");
             Console.WriteLine($"\tProxy Port: {proxyPort}");
-            Console.WriteLine($"\tDatabase Details: {user}@{dbHost}:{dbPort}/{db}");
+            Console.WriteLine($"\tDatabase Details: {user}@{dbIp}:{dbPort}/{db}");
             _tcpProxy = new TcpProxy(_pgStateMachine.ProcessBuffer, _pgStateMachine.SetStateToInitial);
-
-            IPEndPoint dbEndpoint = null;
-            try {
-                dbEndpoint = new IPEndPoint(IPAddress.Parse(dbHost), dbPort);
-            }
-            catch {
-                dbEndpoint = GetIPEndPointFromHostName(dbHost, dbPort, false);
-            }
-
-            _tcpProxy.Start(new IPEndPoint(IPAddress.Parse(proxySourceIp), proxyPort), dbEndpoint);
+            _tcpProxy.Start(new IPEndPoint(IPAddress.Parse(proxySourceIp), proxyPort), new IPEndPoint(IPAddress.Parse(dbIp), dbPort));
         }
 
         private Func<string,string> getMaskingFunction(uint tableOid, uint dataTypeOid, string columnName)
