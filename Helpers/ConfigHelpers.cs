@@ -31,7 +31,7 @@ namespace PgMaskingProxy.Helpers
 
             var j = JObject.Parse(File.ReadAllText("config.json"));
             var dbDetails = (JObject)j["db_connection_details"];
-            string host = (string)dbDetails["ip"];
+            string host = (string)dbDetails["host"];
             int port = (int)dbDetails["port"];
             string user = (string)dbDetails["user"];
             string password = (string)dbDetails["password"];
@@ -78,7 +78,7 @@ namespace PgMaskingProxy.Helpers
 
             var j = JObject.Parse(File.ReadAllText("config.json"));
             var dbDetails = (JObject)j["db_connection_details"];
-            string host = (string)dbDetails["ip"];
+            string host = (string)dbDetails["host"];
             int port = (int)dbDetails["port"];
             string user = (string)dbDetails["user"];
             string password = (string)dbDetails["password"];
@@ -117,7 +117,7 @@ namespace PgMaskingProxy.Helpers
 
             var j = JObject.Parse(File.ReadAllText("config.json"));
             var dbDetails = (JObject)j["db_connection_details"];
-            string host = (string)dbDetails["ip"];
+            string host = (string)dbDetails["host"];
             int port = (int)dbDetails["port"];
             string user = (string)dbDetails["user"];
             string password = (string)dbDetails["password"];
