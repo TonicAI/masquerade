@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using Newtonsoft.Json.Linq;
 using Npgsql;
 using PgMaskingProxy.Helpers;
@@ -40,32 +41,27 @@ namespace PgMaskingProxy
         private void loadState()
         {
             Console.WriteLine("Starting Proxy...");
-            bool success = true;
-            try
-            {
-                _nextState = new ConfigState();
-                _nextState._maskingModel = ConfigHelper.populateMaskingModel();
-                _nextState._oidToTableSchemaName = ConfigHelper.populateTableOidsMapper();
-                _nextState._nonSystemTableOids = ConfigHelper.populateNonSystemTableOids(_nextState._oidToTableSchemaName);
-                _nextState._oidToDataType = ConfigHelper.populateDataTypeOids();
-                _nextState._keyedColumns = ConfigHelper.populateAllPksAndFks();
-            }
-            catch(Exception ex)
-            {
-                success = false;
 
-                //we failed to load config on startup
-                Console.WriteLine("Failed to start.  This is most likely because we failed to connect to your database to run some preliminary queries.  Ensure the db_connection_details in config.json are correct and that your database is reachable from this machine.");
-                if(_state==null)
+            while(true)
+            {
+                try
                 {
-                    throw ex;
+                    _nextState = new ConfigState();
+                    _nextState._maskingModel = ConfigHelper.populateMaskingModel();
+                    _nextState._oidToTableSchemaName = ConfigHelper.populateTableOidsMapper();
+                    _nextState._nonSystemTableOids = ConfigHelper.populateNonSystemTableOids(_nextState._oidToTableSchemaName);
+                    _nextState._oidToDataType = ConfigHelper.populateDataTypeOids();
+                    _nextState._keyedColumns = ConfigHelper.populateAllPksAndFks();
+                    _state = _nextState;
+                    _nextState = null;
+                    break;
                 }
-            }
-
-            if(success)
-            {
-                _state = _nextState;
-                _nextState = null;
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine("Failed to start.  This is most likely because we failed to connect to your database to run some preliminary queries.  Ensure the db_connection_details in config.json are correct and that your database is reachable from this machine.   Trying again 5 seconds...");
+                    Thread.Sleep(5000);
+                }
             }
         }
 
