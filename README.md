@@ -1,4 +1,4 @@
-![Side by side of psql running against the proxy and against the database](https://tonic.ai/uploads/masquerade-a-postgres-proxy.gif)
+![Side by side of psql running against the proxy and against the database](https://uploads-ssl.webflow.com/5f0ae1534d32e5a91598eb9c/5f0c2347de4cdd8a452d5b40_masquerade-a-postgres-proxy.gif)
 
 ** Check out our [blog post](https://www.tonic.ai/post/masquerade-a-postgres-proxy/) on Masquerade!! **
 
