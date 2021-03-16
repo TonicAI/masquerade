@@ -10,7 +10,6 @@ namespace PgMaskingProxy
     {
         private readonly Func<byte[],int, MemoryStream> _processBytesReceivedFromDb;
         private readonly Socket _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        private Socket _dbSocket;
         private bool _inProcessOfNegotiatingSSL = false;
         Action _resetStatemachine;
         public TcpProxy(Func<byte[],int, MemoryStream> processBytesReceivedFromDb, Action resetStateMachine)
@@ -28,15 +27,13 @@ namespace PgMaskingProxy
             while(true)
             {
                 var source = _clientSocket.Accept();
-                if(_dbSocket!=null)
-                {
-                    _dbSocket.Close();
-                }
-                _dbSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                _dbSocket.Connect(remote);
-                var state = new State(source, _dbSocket);
+                Console.WriteLine("Got new connection");
+                Socket dbSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                Console.WriteLine("connecting to new socket");
+                dbSocket.Connect(remote);
+                var state = new State(source, dbSocket);
                 source.BeginReceive(state.ClientBuffer, 0, state.ClientBuffer.Length, 0, OnDataReceiveFromClient, state);
-                _dbSocket.BeginReceive(state.DatabaseBuffer, 0, state.DatabaseBuffer.Length, SocketFlags.None, OnDataReceiveFromDb, state);
+                dbSocket.BeginReceive(state.DatabaseBuffer, 0, state.DatabaseBuffer.Length, SocketFlags.None, OnDataReceiveFromDb, state);
             }
         }
 
