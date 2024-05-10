@@ -11,7 +11,7 @@
 
 <ItemGroup>
   <PackageReference Include="newtonsoft.json" Version="12.0.1" />
-  <PackageReference Include="npgsql" Version="4.0.5" />
+  <PackageReference Include="npgsql" Version="4.0.14" />
 </ItemGroup>
 
   <ItemGroup>
